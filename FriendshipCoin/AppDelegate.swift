@@ -13,9 +13,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
 
-
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-    // Override point for customization after application launch.
+    window = UIWindow(frame: UIScreen.main.bounds)
+    
+    let controllers: [UIViewController] = [
+      UINavigationController(rootViewController: BalanceViewController()),
+      //UINavigationController(rootViewController: AccountsViewController()),
+      UINavigationController(rootViewController: TransactionsViewController()),
+      UINavigationController(rootViewController: SettingsViewController())
+    ]
+    let tab = TabBarController(controllers: controllers)
+    
+    window?.rootViewController = tab
+    window?.makeKeyAndVisible()
+
+    if !KeyManager.shared.hasKeys {
+      let onboarding = OnboardingNavigationViewController()
+      tab.present(onboarding, animated: false, completion: nil)
+    }
     return true
   }
 
