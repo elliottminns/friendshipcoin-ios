@@ -11,9 +11,21 @@ import Foundation
 struct AddressDetails {
   let balance: Balance
   
-  let txids: [String]
+  let txs: [AddressTransaction]
   
   let address: String
+  
+
+}
+
+extension AddressDetails {
+  var txids: [String] {
+    return txs.map { $0.txid }
+  }
+  
+  func direction(for txid: String) -> TransactionDirection {
+    return txs.filter { $0.txid == txid }.first?.direction ?? .out
+  }
 }
 
 extension AddressDetails: JSONConstructable {
@@ -27,7 +39,7 @@ extension AddressDetails: JSONConstructable {
                              sent: "0.00",
                              received: "0.00",
                              current: "0.00")
-      self.txids = []
+      self.txs = []
       
       return
     }
@@ -43,9 +55,7 @@ extension AddressDetails: JSONConstructable {
     self.address = address
     
     let array = data["last_txs"].array ?? []
-    self.txids = array.flatMap { (obj: JSON) -> String? in
-      return obj["addresses"].string
-    }
+    self.txs = AddressTransaction.create(json: array)
   }
 
 }

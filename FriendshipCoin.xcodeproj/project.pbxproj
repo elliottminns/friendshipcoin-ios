@@ -68,6 +68,8 @@
 		4FAFE18B2066BCE500F0B4BB /* UIFont+Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAFE18A2066BCE500F0B4BB /* UIFont+Style.swift */; };
 		4FAFE18D2066BFC300F0B4BB /* UIColor+Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAFE18C2066BFC300F0B4BB /* UIColor+Style.swift */; };
 		4FAFE1902066C74600F0B4BB /* NewWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAFE18F2066C74600F0B4BB /* NewWalletViewController.swift */; };
+		4FD836EA206C47FE00C016C7 /* SendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD836E9206C47FE00C016C7 /* SendViewController.swift */; };
+		4FE1696A206D49490090185D /* AddressTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FE16969206D49490090185D /* AddressTransaction.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -171,6 +173,8 @@
 		4FAFE18A2066BCE500F0B4BB /* UIFont+Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Style.swift"; sourceTree = "<group>"; };
 		4FAFE18C2066BFC300F0B4BB /* UIColor+Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Style.swift"; sourceTree = "<group>"; };
 		4FAFE18F2066C74600F0B4BB /* NewWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewWalletViewController.swift; sourceTree = "<group>"; };
+		4FD836E9206C47FE00C016C7 /* SendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendViewController.swift; sourceTree = "<group>"; };
+		4FE16969206D49490090185D /* AddressTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTransaction.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -328,6 +332,7 @@
 			children = (
 				4F1D9D122066E37D0065E3EF /* BalanceViewController.swift */,
 				4F2CABAD20699A0F0016B62F /* ReceiveViewController.swift */,
+				4FD836E9206C47FE00C016C7 /* SendViewController.swift */,
 			);
 			path = Balance;
 			sourceTree = "<group>";
@@ -386,6 +391,7 @@
 				4F2CABB8206AA76E0016B62F /* Account.swift */,
 				4F24428B206BF30F008E1600 /* AccountTransaction.swift */,
 				4F528996206AB8150027BA59 /* Address.swift */,
+				4FE16969206D49490090185D /* AddressTransaction.swift */,
 				4F244283206BD4AD008E1600 /* AddressDetails.swift */,
 				4F244281206BD0DD008E1600 /* Balance.swift */,
 				4F762B6C206AF19200B8CC55 /* Transaction.swift */,
@@ -604,10 +610,12 @@
 				4F2CAB9920698F520016B62F /* Result.swift in Sources */,
 				4F2CAB9820698F520016B62F /* Requester.swift in Sources */,
 				4F0F1D7D2065BF3F00B04E28 /* OnboardingNavigationViewController.swift in Sources */,
+				4FE1696A206D49490090185D /* AddressTransaction.swift in Sources */,
 				4F244282206BD0DD008E1600 /* Balance.swift in Sources */,
 				4F762B6D206AF19200B8CC55 /* Transaction.swift in Sources */,
 				4F0F1D6A2065B2DD00B04E28 /* AddressManager.swift in Sources */,
 				4F0F1D652065B15300B04E28 /* TabBarController.swift in Sources */,
+				4FD836EA206C47FE00C016C7 /* SendViewController.swift in Sources */,
 				4F1D9D102066E01C0065E3EF /* UIButton+Style.swift in Sources */,
 				4F2CABB9206AA76E0016B62F /* Account.swift in Sources */,
 				4F1D9D1A206806790065E3EF /* TransactionsViewController.swift in Sources */,

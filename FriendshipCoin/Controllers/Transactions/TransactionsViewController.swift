@@ -44,7 +44,7 @@ class TransactionsViewController: UITableViewController {
     guard let account = AccountManager.shared.getAccounts().first else {
       return
     }
-    transactions = AddressManager.shared.transactions(for: account)
+    transactions = AddressManager.shared.transactions(for: account).reversed()
   }
   
   func reload() {

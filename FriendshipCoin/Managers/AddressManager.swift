@@ -9,21 +9,9 @@
 import Foundation
 import CoinKit
 
-class AddressManager {
-  
-  static let shared = AddressManager()
-  
-  var addresses: [Account: [Address]]
-  
-  var balances: [String: Balance]
-  
-  var transactions: [String: [Transaction]]
-  
-  private init() {
-    addresses = [:]
-    balances = [:]
-    transactions = [:]
-  }
+typealias AddressManager = AccountManager
+
+extension AccountManager {
   
   func load(addresses number: Int, for account: Account, callback: @escaping () -> Void) throws {
     let count = (self.addresses[account] ?? []).count
@@ -45,6 +33,9 @@ class AddressManager {
     let service = AddressService(addresses: addresses)
     service.read { (result) in
       if case let .success(details) = result {
+        details.forEach {
+          self.details[$0.address] = $0
+        }
         let balances = details.map { $0.balance }
         balances.forEach { self.balances[$0.address] = $0 }
         details.forEach {
@@ -114,11 +105,12 @@ class AddressManager {
     let total = addresses[account]?.flatMap { (address) -> [AccountTransaction] in
       let txs = transactions(for: address)
       return txs.map { tx -> AccountTransaction in
+        
         let amount = (tx.outputs.filter {
           $0.address == address.id
         }.first?.amount) ?? "0.00"
         
-        let direction = AccountTransaction.Direction.out
+        let direction = self.details[address.id]?.direction(for: tx.id) ?? .out
         return AccountTransaction(amount: amount, direction: direction,
                                   transaction: tx, account: account,
                                   address: address)

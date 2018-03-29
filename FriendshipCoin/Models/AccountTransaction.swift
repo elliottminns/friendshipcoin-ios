@@ -8,16 +8,16 @@
 
 import Foundation
 
+enum TransactionDirection {
+  case `in`
+  case out
+}
+
 struct AccountTransaction {
-  
-  enum Direction {
-    case `in`
-    case out
-  }
   
   let amount: String
   
-  let direction: Direction
+  let direction: TransactionDirection
   
   let transaction: Transaction
   

@@ -13,10 +13,23 @@ class AccountManager {
   
   var accounts: [Account]
   
+  var addresses: [Account: [Address]]
+  
+  var balances: [String: Balance]
+  
+  var transactions: [String: [Transaction]]
+  
+  var details: [String: AddressDetails] = [:]
+  
   private init() {
     self.accounts = []
+    addresses = [:]
+    balances = [:]
+    transactions = [:]
+    
     let accounts = self.getAccounts()
     self.accounts = accounts
+
   }
   
   func addAccount(for key: String, index: Int, callback: @escaping (Account) -> Void) {

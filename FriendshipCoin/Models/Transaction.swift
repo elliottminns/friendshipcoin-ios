@@ -8,11 +8,6 @@
 
 import Foundation
 
-enum TransactionDirection {
-  case `in`
-  case out
-}
-
 struct Transaction {
   let id: String
   
