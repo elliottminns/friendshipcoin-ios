@@ -14,6 +14,8 @@ class ReceiveViewController: UIViewController {
   
   let account: Account
   
+  let wallet: Wallet
+  
   let titleLabel = UILabel()
   
   let addressLabel = UILabel()
@@ -32,6 +34,8 @@ class ReceiveViewController: UIViewController {
   
   let scrollView = UIScrollView()
   
+  let loadingIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+  
   var address: String {
     didSet {
       updateQR()
@@ -39,9 +43,10 @@ class ReceiveViewController: UIViewController {
     }
   }
   
-  init(account: Account) {
+  init(account: Account, wallet: Wallet) {
     self.account = account
     self.address = ""
+    self.wallet = wallet
     super.init(nibName: nil, bundle: nil)
     self.render()
   }
@@ -96,15 +101,18 @@ class ReceiveViewController: UIViewController {
     titleLabel.centerHorizontally()
     titleLabel.bottomToTop(of: addressLabel, offset: -8)
     
-    AddressManager.shared.unusedAddress(for: account) {
-      self.addressView.height(120)
-      self.address = $0.address
-    }
-    
-    qrImageView.contentMode = .scaleAspectFit
+    self.address = wallet.unusedAddress(for: account)
+    self.addressView.height(120)
 
-    stackView.addArrangedSubview(qrImageView)
+    qrImageView.height(200)
+    qrImageView.contentMode = .scaleAspectFit
+    qrImageView.addSubview(loadingIndicator)
+    loadingIndicator.hidesWhenStopped = true
+    loadingIndicator.startAnimating()
+    loadingIndicator.centerInSuperview()
+
     stackView.addArrangedSubview(amountView)
+    stackView.addArrangedSubview(qrImageView)
     stackView.addArrangedSubview(addressView)
 
     
@@ -207,21 +215,26 @@ class ReceiveViewController: UIViewController {
   }
   
   func updateQR() {
-    let string = "friendshipcoin:\(self.address)"
-    let additions: String = {
-      var additions = "?"
-      if let amount = self.amountField.text {
-        additions = "\(additions)amount=\(amount)"
-      }
+    DispatchQueue.global().async {
+      let string = "friendshipcoin:\(self.address)"
+      let additions: String = {
+        var additions = "?"
+        if let amount = self.amountField.text {
+          additions = "\(additions)amount=\(amount)"
+        }
+        
+        if additions.count == 1 { return "" }
+        return additions
+      }()
       
-      if additions.count == 1 { return "" }
-      return additions
-    }()
-    
-    let code = string + additions
-    if let image = QRCode(code)?.image {
-      self.qrImageView.image = image
-      self.qrImageView.height(image.size.height)
+      let code = string + additions
+      if let image = QRCode(code)?.image {
+        DispatchQueue.main.async {
+          self.loadingIndicator.stopAnimating()
+          self.qrImageView.image = image
+          self.qrImageView.height(image.size.height)
+        }
+      }
     }
   }
   
@@ -236,12 +249,7 @@ class ReceiveViewController: UIViewController {
 
 extension ReceiveViewController: UITextFieldDelegate {
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    let text = (textField.text ?? "")
-    let decimalLength = text.split(separator: ".").last?.count ?? 0
-    if decimalLength < 8 {
-      return true
-    } else {
-      return (range.lowerBound + string.count) < text.count
-    }
+    return textField.isAllowedCurrencyEdit(range: range,
+                                           replacementString: string)
   }
 }

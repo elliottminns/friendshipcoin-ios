@@ -1,4 +1,4 @@
-github "elliottminns/CoinKit" "master"
+github "elliottminns/CoinKit" "feature/networking"
 github "SwiftyJSON/SwiftyJSON" "4.0.0"
 github "freshOS/Stevia" "4.1.0"
 github "kishikawakatsumi/KeychainAccess" "v3.1.0"
@@ -6,3 +6,4 @@ github "roberthein/TinyConstraints" "3.1.0"
 github "mxcl/PromiseKit" ~> 6.0
 github "akosma/SwiftMoment" "master"
 github "blochberger/QRCode" "master"
+github "yannickl/QRCodeReader.swift" >= 8.1.1

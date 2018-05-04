@@ -114,7 +114,7 @@ class NewWalletViewController: UIViewController {
     guard let mnemonic = mnemonic else { return }
     KeyManager.shared.store(mnemonic: mnemonic)
     let account = try! KeyManager.shared.getPublicBase58(account: 0)
-    AccountManager.shared.addAccount(for: account, index: 0) { (account) in
+    NetworkManager.shared.wallet.addAccount(for: account, index: 0) { _ in
       self.dismiss(animated: true, completion: nil)
     }
   }

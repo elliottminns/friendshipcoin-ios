@@ -42,6 +42,21 @@ class KeyManager {
     }
   }
   
+  func keyPair(for account: Account, address: Int) throws -> ECPair {
+    guard let seed = try privKeychain.get("seed") else { throw KeyManagerError.notFound }
+    let index = account.index
+    let node = try HDNode(seedHex: seed, network: NetworkType.friendshipcoin)
+    let accountNode = try node.derive(path: "m/44'/0'/\(index)'")
+    let addressNode = try accountNode.derive(0).derive(address)
+    return addressNode.keyPair
+  }
+  
+  func nuke() throws {
+    try privKeychain.remove("seed")
+    try pubKeychain.remove("m/44'/0'/0'")
+    try pubKeychain.remove("has-mnemonic-phrase")
+  }
+  
   func getPublicBase58(account: Int) throws -> String {
     guard let acc = try pubKeychain.get("m/44'/0'/\(account)'") else {
       throw KeyManagerError.notFound

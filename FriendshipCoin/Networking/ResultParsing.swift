@@ -54,7 +54,7 @@ protocol JSONConstructable {
 
 extension JSONConstructable {
   static func create(json data: [JSON]) -> [Self] {
-    return data.flatMap { item in
+    return data.compactMap { item in
       Self.init(json: item)
     }
   }

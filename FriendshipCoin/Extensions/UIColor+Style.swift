@@ -16,4 +16,8 @@ extension UIColor {
   static var fscLightGreen: UIColor {
     return UIColor(red: 223 / 255, green: 240 / 255, blue: 216 / 255, alpha: 1.0)
   }
+  
+  static var fscLightRed: UIColor {
+    return UIColor(red: 240 / 255, green: 223 / 255, blue: 216 / 255, alpha: 1.0)
+  }
 }

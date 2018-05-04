@@ -31,3 +31,9 @@ extension Account: Hashable {
     return lhs.publicKey == rhs.publicKey
   }
 }
+
+extension Account {
+  var totalBalance: String {
+    return NetworkManager.shared.wallet.balance(for: self)
+  }
+}

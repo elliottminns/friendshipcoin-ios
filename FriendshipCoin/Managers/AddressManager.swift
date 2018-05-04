@@ -20,7 +20,7 @@ extension AccountManager {
                           network: NetworkType.friendshipcoin)
     
     let range = count ..< number
-    let addresses = range.flatMap { (index) -> Address? in
+    let addresses = range.compactMap { (index) -> Address? in
       guard let value = try? node.derive(0).derive(index).address else {
         return nil
       }
@@ -89,6 +89,7 @@ extension AccountManager {
   
   func unusedAddress(for account: Account, callback: @escaping (Address) -> Void) {
     let addresses = self.addresses[account] ?? []
+    
     
     if let unused = (addresses.filter {
       return (self.transactions[$0.address] ?? []).count == 0
