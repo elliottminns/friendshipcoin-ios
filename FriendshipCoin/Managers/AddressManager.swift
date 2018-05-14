@@ -47,8 +47,9 @@ extension AccountManager {
   }
   
   func balance(for account: Account) -> String {
+
     let addresses = self.addresses[account] ?? []
-    let balances = addresses.flatMap {
+    let balances = addresses.compactMap {
       return self.balances[$0.address]
     }
     

@@ -101,7 +101,13 @@ class ReceiveViewController: UIViewController {
     titleLabel.centerHorizontally()
     titleLabel.bottomToTop(of: addressLabel, offset: -8)
     
-    self.address = wallet.unusedAddress(for: account)
+    DispatchQueue.global().async {
+      let unused = self.wallet.unusedAddress(for: self.account)
+      DispatchQueue.main.async {
+        self.address = unused
+      }
+    }
+    
     self.addressView.height(120)
 
     qrImageView.height(200)
@@ -215,20 +221,23 @@ class ReceiveViewController: UIViewController {
   }
   
   func updateQR() {
-    DispatchQueue.global().async {
-      let string = "friendshipcoin:\(self.address)"
-      let additions: String = {
-        var additions = "?"
-        if let amount = self.amountField.text {
-          additions = "\(additions)amount=\(amount)"
-        }
-        
-        if additions.count == 1 { return "" }
-        return additions
-      }()
+    let string = "friendshipcoin:\(self.address)"
+    let additions: String = {
+      var additions = "?"
+      if let amount = self.amountField.text {
+        additions = "\(additions)amount=\(amount)"
+      }
       
-      let code = string + additions
-      if let image = QRCode(code)?.image {
+      if additions.count == 1 { return "" }
+      return additions
+    }()
+    
+    let code = string + additions
+    DispatchQueue.global().async {
+      let qr = QRCode(code)
+      
+      
+      if let image = qr?.image {
         DispatchQueue.main.async {
           self.loadingIndicator.stopAnimating()
           self.qrImageView.image = image

@@ -17,6 +17,10 @@ struct WalletDebit: Hashable {
   
   let address: String
   
+  var amount: UInt64 {
+    return transaction.inputsAmount
+  }
+  
   var hashValue: Int {
     return "\(transaction.id)-\(inputIndex)".hashValue
   }

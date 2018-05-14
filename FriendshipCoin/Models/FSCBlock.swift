@@ -30,8 +30,12 @@ struct FSCBlock: Block {
   let data: Data
   
   init(data: Data) throws {
-    self.data = data
     let hash = NeoScrypt().hash(data: data)
+    try self.init(data: data, hash: hash)
+  }
+  
+  init(data: Data, hash: Data) throws {
+    self.data = data
     self.hash = hash
     
     let reader = DataReader(data: data)

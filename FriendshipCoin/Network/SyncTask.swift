@@ -34,8 +34,6 @@ class SyncTask {
   
   fileprivate let magic: Magic
   
-  fileprivate var headers: [BlockHeader] = []
-  
   fileprivate var callback: (() -> Void)?
   
   fileprivate(set) var isSyncing: Bool = false
@@ -68,8 +66,8 @@ class SyncTask {
   func start(progressDelegate: SyncTaskProgressDelegate, callback: @escaping () -> Void) {
     guard !isSyncing else { return }
     self.syncProgressDelegate = progressDelegate
-    self.progress = Progress(totalUnitCount: 4)
-    self.headers = []
+    self.progress = Progress(totalUnitCount: 0)
+
     isSyncing = true
     self.callback = callback
     
@@ -93,8 +91,8 @@ class SyncTask {
       let filechain = FileChain(fileUrl: fileUrl, blockchain: self.blockchain, magic: self.magic)
       
       let fileProgress = try filechain.loadChain {
-        self.progress = Progress(totalUnitCount: Int64(self.headers.count))
-        self.progress.becomeCurrent(withPendingUnitCount: Int64(self.headers.count))
+        self.progress = Progress(totalUnitCount: Int64(0))
+        self.progress.becomeCurrent(withPendingUnitCount: Int64(0))
         self.hasLoadedInitial = true
         self.downloadHeaders()
       }
@@ -106,59 +104,53 @@ class SyncTask {
       }
       
     } catch _ {
-      self.progress = Progress(totalUnitCount: Int64(self.headers.count))
-      self.progress.becomeCurrent(withPendingUnitCount: Int64(self.headers.count))
+      self.progress = Progress(totalUnitCount: Int64(0))
+      self.progress.becomeCurrent(withPendingUnitCount: Int64(0))
       downloadHeaders()
     }
   }
   
   fileprivate func downloadHeaders() {
-    self.state = .headers
-    self.headerLoop()
-  }
-  
-  fileprivate func headerLoop() {
-    guard state == .headers else { return }
+    self.state = .blocks
     network.waitForConnection {
       let tip = self.blockchain.tip
-      let locator = self.headers.last?.hash ?? tip.hash
-      let previous = self.headers.last?.prevHash ?? tip.prevHash
-      let locators = [locator, previous]
-      
-      self.syncProgressDelegate?.sync(task: self, didUpdateProgress: self.progress, ofType: .headers)
+      let previous = [-10, -20, -30].compactMap { self.blockchain.block(at: $0) }
+      let locators = ([tip] + previous).map { $0.hash }
+
+      self.syncProgressDelegate?.sync(task: self, didUpdateProgress: self.progress, ofType: .blocks)
       
       self.network.getHeaders(locators: locators, stop: nil) { result in
-        guard self.state == .headers else { return }
+        guard self.state == .blocks else { return }
         switch result {
         case .success(let headers):
-          self.add(headers: headers)
-          self.progress.totalUnitCount = Int64(self.headers.count)
-          self.syncProgressDelegate?.sync(task: self, didUpdateProgress: self.progress, ofType: .headers)
-          if headers.count > 0 {
-            self.headerLoop()
-          } else {
-            self.download(blocks: self.headers.map { $0.hash })
-          }
+          do {
+            try self.add(headers: headers) {
+              self.syncProgressDelegate?.sync(task: self,
+                                              didUpdateProgress: self.progress,
+                                              ofType: .blocks)
+              
+              if headers.count > 0 {
+                self.downloadHeaders()
+              } else {
+                self.isSyncing = false
+                self.state = .none
+                self.callback?()
+              }
+            }
+          } catch _ {}
         case .failure(_): break
         }
       }
     }
   }
   
-  fileprivate func download(blocks hashes: [Data]) {
-    state = .blocks
-    blockLoop(hashes: hashes)
-  }
-  fileprivate func blockLoop(hashes: [Data]) {
-    guard state == .blocks else { return }
-    
+  fileprivate func download(blocks hashes: [Data], callback: @escaping () -> Void) {
     self.syncProgressDelegate?.sync(task: self, didUpdateProgress: self.progress, ofType: .blocks)
+    
     guard hashes.count > 0 else {
-      self.isSyncing = false
-      self.state = .none
-      self.callback?()
-      return
+      return callback()
     }
+    
     network.waitForConnection {
       var blockHashes = hashes
       let part = (0 ..< 500).compactMap({ (item) -> Data? in
@@ -169,36 +161,24 @@ class SyncTask {
       self.network.get(blocks: part) { result in
         guard self.state == .blocks else { return }
         if case let .success(blocks) = result {
-          do {
-            try self.blockchain.add(blocks: blocks)
-            self.progress.completedUnitCount = self.progress.completedUnitCount + Int64(blocks.count)
-            self.syncProgressDelegate?.sync(task: self, didUpdateProgress: self.progress, ofType: .blocks)
-            self.blockLoop(hashes: blockHashes)
-          } catch _ {
-            print("Broken chain shit again")
-            self.blockLoop(hashes: hashes)
-          }
+          self.blockchain.add(blocks: blocks)
+          self.progress.completedUnitCount = self.progress.completedUnitCount + Int64(blocks.count)
+          self.syncProgressDelegate?.sync(task: self, didUpdateProgress: self.progress, ofType: .blocks)
+          self.download(blocks: blockHashes, callback: callback)
         } else {
-          self.blockLoop(hashes: hashes)
+          self.download(blocks: hashes, callback: callback)
         }
       }
     }
   }
   
-  fileprivate func add(headers: [BlockHeader]) {
+  fileprivate func add(headers: [BlockHeader], callback: @escaping () -> Void) throws {
     
-    var last = self.headers.last ?? self.blockchain.tip
-    
-    let filtered = headers.filter { header -> Bool in
-      if last.hash == header.prevHash {
-        last = header
-        return true
-      } else {
-        return false
-      }
+    guard headers.isContinous else {
+      throw CoinKit.Blockchain<FSCBlock>.Error.chainBroken
     }
-    
-    self.headers.append(contentsOf: filtered)
+    self.progress.totalUnitCount = self.progress.totalUnitCount + Int64(headers.count)
+    self.download(blocks: headers.map { $0.hash }, callback: callback)
   }
   
 }

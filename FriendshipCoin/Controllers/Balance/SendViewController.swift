@@ -111,6 +111,8 @@ class SendViewController: UIViewController {
     addressField.topToBottom(of: amountSep, offset: margin)
     addressField.height(44)
     addressField.textField.delegate = self
+    addressField.textField.autocorrectionType = .no
+    addressField.textField.autocapitalizationType = .none
     
     addressField.textField.returnKeyType = .next
 
@@ -189,13 +191,18 @@ extension SendViewController {
       }
 
       let transaction = try builder.build()
-      print("\(transaction.id)")
-      print("\(transaction.toData())")
       NetworkManager.shared.broadcast(transaction: transaction)
+      
+      // Tell the wallet to hold the funds
+      wallet.lock(utxos: utxos)
+      wallet.add(pending: transaction)
+      
+      dismiss(animated: true, completion: nil)
     } catch let err {
-      print(err)
+      let controller = UIAlertController(title: "Error", message: err.localizedDescription, preferredStyle: .alert)
+      controller.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
+      present(controller, animated: true, completion: nil)
     }
-    print("\(utxos.count)")
   }
 }
 

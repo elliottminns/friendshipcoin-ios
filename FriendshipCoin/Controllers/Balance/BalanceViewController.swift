@@ -125,6 +125,11 @@ class BalanceViewController: UIViewController {
       name: NetworkManager.Notifications.syncDetailMessage,
       object: nil
     )
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(walletScanned),
+      name: Wallet.Notifications.scanningEnded,
+      object: nil
+    )
     
     updateView()
   }
@@ -188,6 +193,12 @@ class BalanceViewController: UIViewController {
       self.syncingLabel.isHidden = true
       self.syncingIndicator.stopAnimating()
     }
+  }
+  
+  @objc
+  func walletScanned() {
+    let account = NetworkManager.shared.wallet.accounts[0]
+    self.balanceLabel.text = NetworkManager.shared.wallet.balance(for: account)
   }
   
   @objc

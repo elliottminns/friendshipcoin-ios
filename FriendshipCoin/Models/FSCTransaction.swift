@@ -46,6 +46,19 @@ struct FSCTransaction: CoinKit.Transaction {
     }
   }
   
+  var inputAddresses: Set<String> {
+    let addresses = inputs.compactMap { input in
+      return input.address(network: NetworkType.friendshipcoin)?.address
+    }
+    return Set<String>(addresses)
+  }
+  
+  var outputAddresses: Set<String> {
+    let addresses = outputs.compactMap { output in
+      return output.address(network: NetworkType.friendshipcoin)?.address
+    }
+    return Set<String>(addresses)
+  }
   
   var id: String {
     if let id = self._id { return id }

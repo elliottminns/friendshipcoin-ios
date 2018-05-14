@@ -20,6 +20,7 @@ class NetworkManager {
     static let isSyncingStopped = Notification.Name("NetworkManager.Notifications.isSyncingStopped")
     static let syncMessage = Notification.Name("NetworkManager.Notifications.syncMessage")
     static let syncDetailMessage = Notification.Name("NetworkManager.Notifications.syncDetailMessage")
+    static let incomingTransaction = Notification.Name("NetworkManager.Notifications.incomingTransaction")
   }
   
   static let shared: NetworkManager = NetworkManager()
@@ -38,7 +39,11 @@ class NetworkManager {
   
   var headers: [BlockHeader] = []
   
+  var transactions: Set<Data> = []
+  
   let syncTask: SyncTask
+  
+  var inventoryQueue: [Data] = []
   
   var syncMessage: String? {
     didSet {
@@ -78,20 +83,16 @@ class NetworkManager {
         NotificationCenter.default.post(name: name, object: self)
         self.syncMessage = "Loading balances..."
         self.syncDetailMessage = ""
-        self.wallet.scanForBalances {
-          
-        }
+        self.wallet.scanForBalances {}
       } else {
         NotificationCenter.default.post(name: name, object: self)
       }
-      
-      if checkTimer == nil {
-        checkTimer = Timer.scheduledTimer(withTimeInterval: spacing, repeats: true, block: { _ in
-//          self.downloadHeaders()
-        })
-      }
     }
   }
+  
+  var inventoryDict: [Data: Int] = [:]
+  
+  var inventoryHashes: [Data] = []
   
   fileprivate var hasConnected: Bool = false {
     didSet {
@@ -119,11 +120,13 @@ class NetworkManager {
   
   init() {
     let defaultPort: UInt32 = 58008
-//    let nodes = ["54.172.62.103", "167.99.13.126", "104.131.176.130", "45.55.37.221"]
-//    let dns = ["node.friendshipcoin.com"]
-    let dns: [String] = []
-//    let nodes = ["167.99.13.126"]
-    let nodes = ["127.0.0.1"]
+    let nodes = ["54.172.62.103", "167.99.13.126", "104.131.176.130",
+                 "45.55.37.221", "98.100.196.184", "85.25.33.25",
+                 "199.247.7.70", "217.182.253.139", "45.77.74.59",
+                 "188.138.61.146", "207.246.103.231", "52.90.5.72",
+                 "98.100.196.185", "37.9.231.144", "18.205.205.207",
+                 "144.202.13.250", "62.75.152.56", "163.172.210.80"]
+    let dns = ["node.friendshipcoin.com"]
     let params = P2PNetwork<FSCBlock>.Parameters(magic: magic,
                                        defaultPort: defaultPort,
                                        dnsSeeds: dns,
@@ -138,17 +141,11 @@ class NetworkManager {
   }
   
   func load() {
-    self.isSyncing = true
+    network.add(messageHandler: self)
+    isSyncing = true
     syncTask.start(progressDelegate: self) {
       self.isSyncing = false
-    }
-  }
-  
-  func loadMissingBlocks() {
-    self.syncMessage = "Scanning blocks..."
-    self.blockchain.missingBlocks { (headers) in
-      self.blocksToDownload = headers.map { $0.hash }
-      self.downloadHeaders()
+      self.download(blocks: self.inventoryHashes)
     }
   }
   
@@ -162,102 +159,34 @@ class NetworkManager {
     network.connect()
   }
   
-  func downloadHeaders() {
-    self.isSyncing = true
-    waitForConnection {
-      self.syncMessage = "Downloading headers..."
-      let tip = self.blockchain.tip
-      let locator = self.headers.last?.hash ?? tip.hash
-      let previous = self.headers.last?.prevHash ?? tip.prevHash
-      let locators = [locator, previous]
-      print("GET HEADERS WITH LOCATOR: \(locator.hexEncodedString())")
-      self.network.getHeaders(locators: locators, stop: nil) { result in
-        self.onHeaders(result)
+  func download(blocks hashes: [Data]) {
+    guard !syncTask.isSyncing,
+      hashes.count > 0 else { return }
+    
+    self.network.get(blocks: hashes) { (result) in
+      switch result {
+      case .success(let blocks):
+        guard blocks.count > 0 else { return }
+        self.blockchain.add(blocks: blocks)
+        self.wallet.scanForBalances {
+          
+        }
+      case .failure(_):
+        break
       }
     }
   }
   
-  func download(blocks headers: [BlockHeader]) {
-    download(blocks: headers.map { $0.hash })
-  }
-  
-  func download(blocks hashes: [Data]) {
-    self.isSyncing = true
-    
-    guard hashes.count > 0 else {
-      self.isSyncing = false
+  func addInventory(hash: Data) {
+    guard !syncTask.isSyncing else {
+      self.inventoryHashes.append(hash)
       return
     }
-    
     waitForConnection {
-      self.syncMessage = "Downloading blocks..."
-      var blockHashes = hashes
-      let part = (0 ..< 500).compactMap({ (item) -> Data? in
-        guard blockHashes.count > 0 else { return nil }
-        return blockHashes.removeFirst()
-      })
-
-      self.network.get(blocks: part) { result in
-        if case let .success(blocks) = result {
-          do {
-            try self.blockchain.add(blocks: blocks)
-            self.download(blocks: blockHashes)
-          } catch _ {
-            print("Broken chain shit again")
-          }
-        } else {
-          self.download(blocks: hashes)
-        }
-      }
+      self.download(blocks: [hash])
     }
   }
   
-  func onHeaders(_ result: CoinKit.Result<[BlockHeader]>) {
-    switch result {
-    case .success(let headers):
-        self.add(headers: headers)
-        if headers.count > 0 {
-          self.downloadHeaders()
-        } else {
-          self.download(blocks: self.headers.map { $0.hash })
-          //            self.headers.removeAll()
-        }
-    case .failure(_): break
-    }
-  }
-  
-  func add(headers: [BlockHeader]) {
-    
-    var last = self.headers.last ?? self.blockchain.tip
-    
-    let filtered = headers.filter { header -> Bool in
-      if last.hash == header.prevHash {
-        last = header
-        return true
-      } else {
-        return false
-      }
-    }
-    
-    self.headers.append(contentsOf: filtered)
-  }
-  
-  func onInventory(_ result: CoinKit.Result<[Data]>) {
-    DispatchQueue.main.async {
-      switch result {
-      case .success(let hashes):
-        self.blocksToDownload.append(contentsOf: hashes)
-        if hashes.count > 0 {
-//          self.downloadBlockHashes()
-//          self.download(blocks: hashes)
-        } else {
-          //self.download(blocks: self.blocksToDownload)
-          //self.blocksToDownload.removeAll()
-        }
-      case .failure(_): break
-      }
-    }
-  }
   
   func waitForConnection(callback: @escaping () -> Void) {
     guard !isConnected else { return callback() }
@@ -285,7 +214,11 @@ extension NetworkManager: SyncTaskProgressDelegate {
     switch type {
     case .blocks:
       syncMessage = "Downloading blocks..."
-      syncDetailMessage = "\(progress.completedUnitCount) / \(progress.totalUnitCount)"
+      if progress.totalUnitCount > 0 {
+        syncDetailMessage = "\(progress.completedUnitCount) / \(progress.totalUnitCount)"
+      } else {
+        syncDetailMessage = ""
+      }
     case .file:
       syncMessage = "Loading block data..."
       let completed = String.init(format: "%.2f", progress.fractionCompleted * 100)
@@ -301,5 +234,54 @@ extension NetworkManager: SyncTaskProgressDelegate {
       syncMessage = ""
       syncDetailMessage = ""
     }
+  }
+}
+
+extension NetworkManager: MessageHandler {
+  var isFinished: Bool {
+    return false
+  }
+  
+  func handle(message: Message, from peer: Peer) {
+    do {
+      let reader = DataReader(data: message.value)
+      let _: UInt8 = try reader.read(endian: .little)
+      let type: UInt32 = try reader.read(endian: .little)
+      if type == 2 {
+        let hash = try reader.read(bytes: 32)
+        self.inventoryDict[hash] = (self.inventoryDict[hash] ?? 0) + 1
+        if self.inventoryDict[hash] == network.peers.count / 2 {
+          self.addInventory(hash: hash)
+        }
+      } else if type == 1 {
+        let hash = try reader.read(bytes: 32)
+        guard !transactions.contains(hash) else { return }
+
+        network.get(transactions: [hash], peer: peer) { (result) in
+          DispatchQueue.main.async {
+            guard !self.transactions.contains(hash) else { return }
+            self.transactions.insert(hash)
+            if case let .success(txs) = result {
+              let results = txs.map(self.wallet.check(transaction:))
+              let credits = results.flatMap { $0.credits }
+              let debits = results.flatMap { $0.debits }
+              
+              let total = Int64(credits.amount) - Int64(debits.amount)
+              
+              if total > 0 {
+                NotificationCenter.default.post(name: Notifications.incomingTransaction, object: nil, userInfo: [
+                  "transactions": txs,
+                  "amount": total
+                  ])
+              }
+            }
+          }
+        }
+      }
+    } catch _ {}
+  }
+  
+  func handles(message: Message) -> Bool {
+    return message.type == "inv"
   }
 }

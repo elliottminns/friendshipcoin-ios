@@ -68,11 +68,12 @@
 		4F6AFB9A208FE07A00031CA2 /* NetworkMananger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6AFB99208FE07A00031CA2 /* NetworkMananger.swift */; };
 		4F762B6D206AF19200B8CC55 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F762B6C206AF19200B8CC55 /* Transaction.swift */; };
 		4F762B6F206AFA8400B8CC55 /* AddressRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F762B6E206AFA8400B8CC55 /* AddressRequest.swift */; };
+		4F77C46420AA1C1A00EA4A8C /* CoinKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4F77C46120AA1C1500EA4A8C /* CoinKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4F77C46520AA1C4800EA4A8C /* CoinKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F77C46120AA1C1500EA4A8C /* CoinKit.framework */; };
 		4F84E5C2206E9483001CD456 /* QRCodeReader.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4F49352D206E94350046A31C /* QRCodeReader.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4F84E5C4206E9642001CD456 /* Bip21Reading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F84E5C3206E9642001CD456 /* Bip21Reading.swift */; };
 		4F84E5C6206E9983001CD456 /* UITextField+Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F84E5C5206E9983001CD456 /* UITextField+Currency.swift */; };
-		4FA4F250208E71530043A20F /* CoinKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FA4F24F208E71530043A20F /* CoinKit.framework */; };
-		4FA4F251208E71530043A20F /* CoinKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4FA4F24F208E71530043A20F /* CoinKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4F9970FF209FB3FF001E8191 /* ChainElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9970FE209FB3FF001E8191 /* ChainElement.swift */; };
 		4FAFE1882066BC8300F0B4BB /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4FAFE1862066BC8300F0B4BB /* Montserrat-Regular.ttf */; };
 		4FAFE1892066BC8300F0B4BB /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4FAFE1872066BC8300F0B4BB /* Montserrat-Bold.ttf */; };
 		4FAFE18B2066BCE500F0B4BB /* UIFont+Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAFE18A2066BCE500F0B4BB /* UIFont+Style.swift */; };
@@ -91,6 +92,10 @@
 		4FD836EA206C47FE00C016C7 /* SendAmountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD836E9206C47FE00C016C7 /* SendAmountViewController.swift */; };
 		4FE1696A206D49490090185D /* AddressTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FE16969206D49490090185D /* AddressTransaction.swift */; };
 		4FE1696D206D5D010090185D /* NumberPadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FE1696C206D5D010090185D /* NumberPadView.swift */; };
+		4FED4AB420A9FC1F0094B2CD /* LocalNotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FED4AB320A9FC1F0094B2CD /* LocalNotificationsManager.swift */; };
+		4FED4AB620A9FE380094B2CD /* WalletDebit+Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FED4AB520A9FE380094B2CD /* WalletDebit+Array.swift */; };
+		4FED4AB920AA0FAA0094B2CD /* ToastSwiftFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FED4AB720AA0FA10094B2CD /* ToastSwiftFramework.framework */; };
+		4FED4ABA20AA0FAA0094B2CD /* ToastSwiftFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4FED4AB720AA0FA10094B2CD /* ToastSwiftFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4FF4D43F209389ED00278A06 /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF4D43E209389ED00278A06 /* Wallet.swift */; };
 		4FF4D44120938A6D00278A06 /* FileChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF4D44020938A6D00278A06 /* FileChain.swift */; };
 		4FF4D44420938E3A00278A06 /* blk0001.dat in Resources */ = {isa = PBXBuildFile; fileRef = 4FF4D44320938E3900278A06 /* blk0001.dat */; };
@@ -128,11 +133,12 @@
 				4FB49AA6209924C1000E04B6 /* SwiftMoment.framework in Embed Frameworks */,
 				4F0F1D872065C0F100B04E28 /* Crypto.framework in Embed Frameworks */,
 				4F84E5C2206E9483001CD456 /* QRCodeReader.framework in Embed Frameworks */,
-				4FA4F251208E71530043A20F /* CoinKit.framework in Embed Frameworks */,
 				4F0F1D8B2065C0F100B04E28 /* SwiftyJSON.framework in Embed Frameworks */,
 				4F0F1D892065C0F100B04E28 /* Stevia.framework in Embed Frameworks */,
+				4FED4ABA20AA0FAA0094B2CD /* ToastSwiftFramework.framework in Embed Frameworks */,
 				4F2CABA9206991EB0016B62F /* BigInt.framework in Embed Frameworks */,
 				4F2CABAA206991EB0016B62F /* SipHash.framework in Embed Frameworks */,
+				4F77C46420AA1C1A00EA4A8C /* CoinKit.framework in Embed Frameworks */,
 				4F0F1D852065C0F100B04E28 /* CommonCrypto.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -202,9 +208,11 @@
 		4F6AFB99208FE07A00031CA2 /* NetworkMananger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMananger.swift; sourceTree = "<group>"; };
 		4F762B6C206AF19200B8CC55 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		4F762B6E206AFA8400B8CC55 /* AddressRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressRequest.swift; sourceTree = "<group>"; };
+		4F77C46120AA1C1500EA4A8C /* CoinKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CoinKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F84E5C3206E9642001CD456 /* Bip21Reading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bip21Reading.swift; sourceTree = "<group>"; };
 		4F84E5C5206E9983001CD456 /* UITextField+Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Currency.swift"; sourceTree = "<group>"; };
-		4FA4F24F208E71530043A20F /* CoinKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CoinKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F9970FE209FB3FF001E8191 /* ChainElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChainElement.swift; sourceTree = "<group>"; };
+		4FA4F24F208E71530043A20F /* CoinKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = CoinKit.framework; path = "/Users/elliott/Projects/FriendshipCoin/build/Debug-iphoneos/CoinKit.framework"; sourceTree = "<absolute>"; };
 		4FAFE1862066BC8300F0B4BB /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		4FAFE1872066BC8300F0B4BB /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		4FAFE18A2066BCE500F0B4BB /* UIFont+Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Style.swift"; sourceTree = "<group>"; };
@@ -222,6 +230,9 @@
 		4FD836E9206C47FE00C016C7 /* SendAmountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAmountViewController.swift; sourceTree = "<group>"; };
 		4FE16969206D49490090185D /* AddressTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTransaction.swift; sourceTree = "<group>"; };
 		4FE1696C206D5D010090185D /* NumberPadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberPadView.swift; sourceTree = "<group>"; };
+		4FED4AB320A9FC1F0094B2CD /* LocalNotificationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotificationsManager.swift; sourceTree = "<group>"; };
+		4FED4AB520A9FE380094B2CD /* WalletDebit+Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WalletDebit+Array.swift"; sourceTree = "<group>"; };
+		4FED4AB720AA0FA10094B2CD /* ToastSwiftFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ToastSwiftFramework.framework; path = Carthage/Build/iOS/ToastSwiftFramework.framework; sourceTree = "<group>"; };
 		4FF4D43E209389ED00278A06 /* Wallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wallet.swift; sourceTree = "<group>"; };
 		4FF4D44020938A6D00278A06 /* FileChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileChain.swift; sourceTree = "<group>"; };
 		4FF4D44320938E3900278A06 /* blk0001.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = blk0001.dat; sourceTree = "<group>"; };
@@ -241,9 +252,10 @@
 				4F49352E206E94350046A31C /* QRCodeReader.framework in Frameworks */,
 				4FB49AA5209924C1000E04B6 /* SwiftMoment.framework in Frameworks */,
 				4F0F1D862065C0F100B04E28 /* Crypto.framework in Frameworks */,
+				4F77C46520AA1C4800EA4A8C /* CoinKit.framework in Frameworks */,
 				4F0F1D8A2065C0F100B04E28 /* SwiftyJSON.framework in Frameworks */,
 				4F0F1D882065C0F100B04E28 /* Stevia.framework in Frameworks */,
-				4FA4F250208E71530043A20F /* CoinKit.framework in Frameworks */,
+				4FED4AB920AA0FAA0094B2CD /* ToastSwiftFramework.framework in Frameworks */,
 				4F0F1D842065C0F100B04E28 /* CommonCrypto.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -269,12 +281,12 @@
 			isa = PBXGroup;
 			children = (
 				4FF4D44220938E3900278A06 /* Data */,
-				4FA4F24F208E71530043A20F /* CoinKit.framework */,
 				4F0F1CD920654FDA00B04E28 /* FriendshipCoin */,
 				4F0F1CEE20654FDA00B04E28 /* FriendshipCoinTests */,
 				4F0F1CF920654FDA00B04E28 /* FriendshipCoinUITests */,
 				4F0F1CD820654FDA00B04E28 /* Products */,
 				4F0F1D6D2065B34E00B04E28 /* Frameworks */,
+				4F8FC8E4209D059D0007FA1F /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -363,6 +375,7 @@
 				4F0F1D692065B2DD00B04E28 /* AddressManager.swift */,
 				4F0F1D6B2065B2E600B04E28 /* KeyManager.swift */,
 				4FB49A9C2099088E000E04B6 /* TransactionManager.swift */,
+				4FED4AB320A9FC1F0094B2CD /* LocalNotificationsManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -370,7 +383,9 @@
 		4F0F1D6D2065B34E00B04E28 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4FED4AB720AA0FA10094B2CD /* ToastSwiftFramework.framework */,
 				4FB49AA3209924A1000E04B6 /* SwiftMoment.framework */,
+				4F77C46120AA1C1500EA4A8C /* CoinKit.framework */,
 				4F49352D206E94350046A31C /* QRCodeReader.framework */,
 				4F49352B206E94270046A31C /* QRCode.framework */,
 				4F2CABA5206991E50016B62F /* BigInt.framework */,
@@ -497,10 +512,26 @@
 		4F6AFB98208FE06B00031CA2 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				4F9970F9209D2695001E8191 /* Handlers */,
 				4F6AFB99208FE07A00031CA2 /* NetworkMananger.swift */,
 				4F0F8D692097593500831010 /* SyncTask.swift */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		4F8FC8E4209D059D0007FA1F /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				4FA4F24F208E71530043A20F /* CoinKit.framework */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		4F9970F9209D2695001E8191 /* Handlers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Handlers;
 			sourceTree = "<group>";
 		};
 		4FAFE17F2066BC0D00F0B4BB /* Extensions */ = {
@@ -510,6 +541,7 @@
 				4FAFE18C2066BFC300F0B4BB /* UIColor+Style.swift */,
 				4F1D9D0F2066E01C0065E3EF /* UIButton+Style.swift */,
 				4F84E5C5206E9983001CD456 /* UITextField+Currency.swift */,
+				4FED4AB520A9FE380094B2CD /* WalletDebit+Array.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -527,6 +559,7 @@
 			isa = PBXGroup;
 			children = (
 				4FB49AA120991735000E04B6 /* ReusableCell.swift */,
+				4F9970FE209FB3FF001E8191 /* ChainElement.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -709,7 +742,6 @@
 				"$(SRCROOT)/Carthage/Build/iOS/QRCode.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/BigInt.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SipHash.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/CoinKit.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/TinyConstraints.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/KeychainAccess.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/CommonCrypto.framework",
@@ -718,13 +750,13 @@
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftyJSON.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/QRCodeReader.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftMoment.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/ToastSwiftFramework.framework",
 			);
 			name = Carthage;
 			outputPaths = (
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/QRCode.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/BigInt.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SipHash.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/CoinKit.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/TinyConstraints.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/KeychainAccess.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/CommonCrypto.framework",
@@ -733,6 +765,7 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftyJSON.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/QRCodeReader.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftMoment.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/ToastSwiftFramework.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -751,6 +784,7 @@
 				4FCBF714206E730C00663EC3 /* SendViewController.swift in Sources */,
 				4F84E5C4206E9642001CD456 /* Bip21Reading.swift in Sources */,
 				4FAFE18D2066BFC300F0B4BB /* UIColor+Style.swift in Sources */,
+				4FED4AB420A9FC1F0094B2CD /* LocalNotificationsManager.swift in Sources */,
 				4F2CAB9620698F520016B62F /* ResultParsing.swift in Sources */,
 				4F2CABA120698F9E0016B62F /* ExplorerRequest.swift in Sources */,
 				4F2CAB9920698F520016B62F /* Result.swift in Sources */,
@@ -770,6 +804,7 @@
 				4FF59A9F2093F68C001A89AF /* WalletCredit.swift in Sources */,
 				4FB49A9F2099134C000E04B6 /* TransactionTableViewCell.swift in Sources */,
 				4FB49A9B2098EAB5000E04B6 /* WalletTransaction.swift in Sources */,
+				4F9970FF209FB3FF001E8191 /* ChainElement.swift in Sources */,
 				4F0F8D6A2097593500831010 /* SyncTask.swift in Sources */,
 				4FF59A992093E1A4001A89AF /* WalletStore.swift in Sources */,
 				4F244288206BE89F008E1600 /* Input.swift in Sources */,
@@ -786,6 +821,7 @@
 				4F384589209237920078EDF6 /* FSCBlock.swift in Sources */,
 				4FCD8F522092681200B97A37 /* FSCTransactionInput.swift in Sources */,
 				4FAFE1902066C74600F0B4BB /* NewWalletViewController.swift in Sources */,
+				4FED4AB620A9FE380094B2CD /* WalletDebit+Array.swift in Sources */,
 				4F660A5A2093BA8900ED67D9 /* FSCAddress.swift in Sources */,
 				4F0F1D8F2065C18300B04E28 /* HomeViewController.swift in Sources */,
 				4FF4D44120938A6D00278A06 /* FileChain.swift in Sources */,
@@ -971,6 +1007,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = FriendshipCoin/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.friendshipcoin.FriendshipCoin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -990,6 +1027,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = FriendshipCoin/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.friendshipcoin.FriendshipCoin;
 				PRODUCT_NAME = "$(TARGET_NAME)";

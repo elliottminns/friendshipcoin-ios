@@ -15,7 +15,13 @@ struct WalletTransaction {
     case out
   }
   
-  let direction: Direction
+  var direction: Direction {
+    return amount > 0 ? .in : .out
+  }
+  
+  var id: String {
+    return transaction.id
+  }
   
   let transaction: FSCTransaction
   
@@ -23,7 +29,25 @@ struct WalletTransaction {
     return transaction.timestamp
   }
   
-  var amount: UInt64
+  var amountIn: UInt64 {
+    return credits.reduce(0) {
+      $0 + $1.amount
+    }
+  }
+  
+  var amountOut: UInt64 {
+    return debits.reduce(0) {
+      $0 + $1.amount
+    }
+  }
+  
+  var amount: Int64 {
+    return Int64(amountIn) - Int64(amountOut)
+  }
+  
+  var credits: [WalletCredit] = []
+  
+  var debits: [WalletDebit] = []
   
   var formattedAmount: String {
     return String(format: "%0.8f", Double(self.amount) * 1e-8)
@@ -34,18 +58,18 @@ struct WalletTransaction {
   }
   
   init(credit: WalletCredit) {
-    self.init(transaction: credit.transaction, direction: .in, amount: credit.amount)
+    self.init(transaction: credit.transaction)
+    self.credits.append(credit)
   }
   
   init(debit: WalletDebit) {
-    self.init(transaction: debit.transaction, direction: .out, amount: debit.transaction.inputsAmount)
+    self.init(transaction: debit.transaction)
+    self.debits.append(debit)
   }
   
-  init(transaction: FSCTransaction, direction: Direction, amount: UInt64) {
+  init(transaction: FSCTransaction) {
     TransactionManager.shared.add(transaction: transaction)
-    self.direction = direction
     self.transaction = transaction
-    self.amount = amount
   }
 }
 

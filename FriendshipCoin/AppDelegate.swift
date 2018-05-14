@@ -8,6 +8,8 @@
 
 import UIKit
 import CoinKit
+import UserNotifications
+import ToastSwiftFramework
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,26 +20,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     window = UIWindow(frame: UIScreen.main.bounds)
-/*
-    let privateKey = "74dc5e05ca5303ee2fce5f92fa0c4ceb877c836b21ef594c919ed4356a1cde0e".hexadecimal()!
-    let hash = Data("4e3a52a33ad8b76f21b2dc81c079c7c59aa717d7c98adeafb9f3f7bd07572d22".hexadecimal()!.reversed())
-    
-    let curve = Secp256k1()
-    curve.sign(hash: hash, privateKey: privateKey)
-     
-    let hex = "010000000dbcec5a01d0a07e12664aaafe4fcb9c07745ccf3ee3c5bf0e04787d3b23c3ba25db945a450100000000ffffffff0220a10700000000001976a914fd81fb638baecbeda3f7baa94c249821d760194188ac301b0f00000000001976a91427ae118d24465dd203655f309533b1841f73e0e588ac00000000".components(separatedBy: " ").joined().hexadecimal()!
-    let transaction = try! FSCTransaction(data: hex)
-    let builder = TransactionBuilder<FSCTransaction>(transaction: transaction, network: NetworkType.friendshipcoin)
-    let tx = try! builder.build()
-    print(tx.toData().hexEncodedString())
-    
-    let keypair = try! KeyManager.shared.keyPair(for: NetworkManager.shared.wallet.accounts[0], address: 1)
-    try! builder.sign(transaction: tx, vin: 0, keyPair: keypair)
-    let tx2 = try! builder.build()
-    print(tx2.toData().hexEncodedString())
-    */
 
     NetworkManager.shared.connect()
+    let center = UNUserNotificationCenter.current()
+    center.delegate = self
+    center.requestAuthorization(options: [.alert, .sound, .badge]) {
+      (granted, error) in
+      // Enable or disable features based on authorization.
+      if granted {
+        // update application settings
+      }
+    }
+    LocalNotificationsManager.default.setup()
     
     let controllers: [UIViewController] = [
       UINavigationController(rootViewController: BalanceViewController()),
@@ -54,6 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       let onboarding = OnboardingNavigationViewController()
       tab.present(onboarding, animated: false, completion: nil)
     }
+    
     return true
   }
 
@@ -80,5 +75,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func applicationWillTerminate(_ application: UIApplication) {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+  }
+}
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+  func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    
+    guard let tab = window?.rootViewController as? TabBarController else {
+      return completionHandler([.sound, .alert])
+    }
+    
+    var style = ToastStyle()
+    style.titleAlignment = .center
+    style.messageAlignment = .center
+    style.titleFont = UIFont.titleFont(with: 18)
+    style.messageFont = UIFont.monserrat(with: 18)
+    
+    tab.view.makeToast(notification.request.content.body,
+                       duration: 5,
+                       position: .top,
+                       title: notification.request.content.title,
+                       style: style)
   }
 }

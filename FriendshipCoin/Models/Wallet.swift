@@ -48,6 +48,10 @@ class Wallet {
   
   var debits: [String: Set<WalletDebit>] = [:]
   
+  var locks: Set<WalletCredit> = []
+  
+  var pending: Set<FSCTransaction> = []
+  
   var store: WalletStore
   
   var allCredits: [WalletCredit] {
@@ -65,9 +69,36 @@ class Wallet {
   }
   
   var transactions: [WalletTransaction] {
-    return (self.allCredits.map { WalletTransaction.init(credit: $0) } +
-      self.allDebits.map { WalletTransaction.init(debit: $0) }).sorted()
+    let creditWT = self.allCredits.map { WalletTransaction.init(credit: $0) }
+    let wtHash: [String: WalletTransaction] = creditWT.reduce([:]) { (result, transaction) -> [String: WalletTransaction] in
+      var result = result
+      if let wt = result[transaction.id] {
+        var walletT = wt
+        walletT.credits.append(contentsOf: transaction.credits)
+        result[transaction.id] = walletT
+      } else {
+        result[transaction.id] = transaction
+      }
+      
+      return result
+    }
     
+    let fullHashed: [String: WalletTransaction] = self.allDebits.reduce(wtHash) { (result, debit) -> [String: WalletTransaction] in
+      var result = result
+      let transaction = debit.transaction
+      
+      if let trans = result[transaction.id] {
+        var walletT = trans
+        walletT.debits.append(debit)
+        result[transaction.id] = walletT
+      } else {
+        result[transaction.id] = WalletTransaction(debit: debit)
+      }
+      
+      return result
+    }
+    
+    return fullHashed.values.sorted()
   }
   
   var utxos: [WalletCredit] {
@@ -85,6 +116,7 @@ class Wallet {
     }
     
     let utxos = inputs.filter { (credit) -> Bool in
+      guard !locks.contains(credit) else { return false }
       let id = "\(credit.transaction.id)-\(credit.outputIndex)"
       return outputs[id] == nil
     }
@@ -148,18 +180,41 @@ class Wallet {
     }
   }
   
+  func add(pending transaction: FSCTransaction) {
+    pending.insert(transaction)
+  }
+  
+  func lock(utxos: [WalletCredit]) {
+    utxos.forEach { self.locks.insert($0) }
+  }
+  
   func balance(for account: Account) -> String {
+    let _ = self.transactions
     let addresses = self.accountAddresses[account] ?? []
     
-    let creditAmount = addresses.reduce(0) { (result, address) -> UInt64 in
-      let total = self.credits[address]?.reduce(0, { (res, cred) -> UInt64 in
+    let creditAmount = addresses.reduce(0) { (result, address) -> Int64 in
+      let income = self.credits[address]?.reduce(0, { (res, cred) -> UInt64 in
+//        guard !locks.contains(cred) else { return res }
         return res + cred.amount
-      })
+      }) ?? 0
       
-      return (total ?? 0) + result
+      let outgoings = self.debits[address]?.reduce(0, { (res, debit) -> UInt64 in
+        return res + debit.amount
+      }) ?? 0
+      
+      return Int64(income) - Int64(outgoings) + result
     }
+    
+    let pendingResults = self.pending.map(self.check(transaction:))
+    let pendingCredits = pendingResults.flatMap { $0.credits }
+    let prendingDebits = pendingResults.flatMap { $0.debits }
+    let pendingIncome = pendingCredits.amount
+    let pendingOutcome = prendingDebits.amount
 
-    return "\(Double(creditAmount) * 1e-8) FSC"
+    let pendingAdjust = Int64(pendingIncome) - Int64(pendingOutcome)
+    let total = creditAmount + pendingAdjust
+
+    return "\(Double(total) * 1e-8) FSC"
   }
   
   func load(addresses number: Int, for account: Account, callback: @escaping () -> Void) throws {
@@ -187,7 +242,6 @@ class Wallet {
   }
   
   func index(of address: String, in account: Account) throws -> Int {
-//    let addresses = self.accountAddresses[account]
     guard let index = self.accountAddresses[account]?.index(of: address) else {
       throw Error.addressNotFound
     }
@@ -227,9 +281,15 @@ class Wallet {
       
       var current: FSCBlock? = top
       var wasANull: Bool = false
+      
+      var credits: [WalletCredit] = []
+      var debits: [WalletDebit] = []
+      
       while let block = current, block.hash != self.lastBlockScanned, block.hash != self.chain.genesis.hash {
         
-        block.transactions.forEach { _ = self.check(transaction: $0) }
+        let results = block.transactions.map { self.check(transaction: $0) }
+        credits.append(contentsOf: results.flatMap { $0.credits })
+        debits.append(contentsOf: results.flatMap { $0.debits })
         
         current = self.chain.block(with: block.previousHash)
         if (current == nil ) {
@@ -237,19 +297,30 @@ class Wallet {
         }
       }
       
+      credits.forEach(self.add(credit:))
+      debits.forEach(self.add(debit:))
+      
       if !wasANull {
         self.lastBlockScanned = top.hash
       }
       
       DispatchQueue.main.async {
-        NotificationCenter.default.post(name: Notifications.scanningEnded, object: nil)
+        NotificationCenter.default.post(name: Notifications.scanningEnded, object: nil, userInfo: [
+          "credits": credits,
+          "debits": debits
+        ])
         callback()
         self.store.save(wallet: self)
       }
     }
   }
   
-  fileprivate func check(transaction: FSCTransaction) {
+  func check(transaction: FSCTransaction) -> (credits: [WalletCredit], debits: [WalletDebit]) {
+    var debits: [WalletDebit] = []
+    var credits: [WalletCredit] = []
+    
+    pending.remove(transaction)
+    
     transaction.outputs.enumerated().forEach { item in
       let output = item.element
       guard let address = output.address(network: NetworkType.friendshipcoin) else {
@@ -261,7 +332,7 @@ class Wallet {
                                   outputIndex: item.offset,
                                   address: address.address)
         
-        self.add(credit: credit)
+        credits.append(credit)
       }
     }
     
@@ -275,9 +346,12 @@ class Wallet {
         let debit = WalletDebit(transaction: transaction,
                                 inputIndex: item.offset,
                                 address: address.address)
-        self.add(debit: debit)
+
+        debits.append(debit)
       }
     }
+    
+    return (credits: credits, debits: debits)
   }
   
   fileprivate func add(credit: WalletCredit) {
