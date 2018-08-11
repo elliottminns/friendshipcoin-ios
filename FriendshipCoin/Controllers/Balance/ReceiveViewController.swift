@@ -9,6 +9,7 @@
 import UIKit
 import Stevia
 import QRCode
+import ToastSwiftFramework
 
 class ReceiveViewController: UIViewController {
   
@@ -19,8 +20,6 @@ class ReceiveViewController: UIViewController {
   let titleLabel = UILabel()
   
   let addressLabel = UILabel()
-  
-  let copiedLabel = UILabel()
   
   let addressView = UIView()
   
@@ -75,7 +74,6 @@ class ReceiveViewController: UIViewController {
 
     addressView.sv(titleLabel)
     addressView.sv(addressLabel)
-    addressView.sv(copiedLabel)
 
     titleLabel.font = UIFont.monserrat(with: 14)
     titleLabel.text = "Address"
@@ -90,13 +88,6 @@ class ReceiveViewController: UIViewController {
     
     addressLabel.isUserInteractionEnabled = true
     addressLabel.addGestureRecognizer(tap)
-    
-    copiedLabel.alpha = 0
-    copiedLabel.textColor = UIColor.fscBlue
-    copiedLabel.font = UIFont.monserrat(with: 12, bold: true)
-    copiedLabel.centerHorizontally()
-    copiedLabel.topToBottom(of: addressLabel, offset: 4)
-    copiedLabel.text = "Copied"
     
     titleLabel.centerHorizontally()
     titleLabel.bottomToTop(of: addressLabel, offset: -8)
@@ -175,13 +166,10 @@ class ReceiveViewController: UIViewController {
   func onTap() {
     amountField.resignFirstResponder()
     UIPasteboard.general.string = addressLabel.text
-    UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut], animations: {
-      self.copiedLabel.alpha = 1.0
-    }, completion: { _ in
-      UIView.animate(withDuration: 0.5, delay: 0.75, options: [.curveEaseInOut], animations: {
-        self.copiedLabel.alpha = 0.0
-      }, completion: nil)
-    })
+    
+    var style = ToastStyle()
+    style.messageFont = UIFont.monserrat(with: 18)
+    view.makeToast("Copied", position: .bottom, style: style)
   }
   
   func registerKeyboardNotifications() {

@@ -134,6 +134,8 @@ class BalanceViewController: UIViewController {
     updateView()
   }
   
+  
+  
   func updateView() {
     let wallet = NetworkManager.shared.wallet
     self.account = wallet.accounts.first
@@ -161,6 +163,8 @@ class BalanceViewController: UIViewController {
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
+    let seed = try! KeyManager.shared.pubKeychain.get("m/44'/0'/0'")
+    print(seed ?? "" )
   }
   
   @objc

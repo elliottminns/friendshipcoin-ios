@@ -284,4 +284,17 @@ extension NetworkManager: MessageHandler {
   func handles(message: Message) -> Bool {
     return message.type == "inv"
   }
+  
+  func depth(of blockHash: Data, max: Int) -> Int {
+    var count = 1
+    
+    var current: FSCBlock? = blockchain.tip
+    
+    while let curr = current, curr.hash != blockHash, count < max {
+      count = count + 1
+      current = blockchain.block(with: curr.previousHash)
+    }
+    
+    return count
+  }
 }

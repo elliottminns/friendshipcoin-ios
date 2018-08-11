@@ -64,4 +64,12 @@ class TransactionsTableViewController: UITableViewController {
     cell.transaction = transaction
     return cell
   }
+  
+  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    tableView.deselectRow(at: indexPath, animated: true)
+    
+    let transaction = transactions[indexPath.row]
+    let controller = TransactionViewController(transaction: transaction)
+    navigationController?.pushViewController(controller, animated: true)
+  }
 }

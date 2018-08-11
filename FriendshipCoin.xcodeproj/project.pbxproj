@@ -70,6 +70,7 @@
 		4F762B6F206AFA8400B8CC55 /* AddressRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F762B6E206AFA8400B8CC55 /* AddressRequest.swift */; };
 		4F77C46420AA1C1A00EA4A8C /* CoinKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4F77C46120AA1C1500EA4A8C /* CoinKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4F77C46520AA1C4800EA4A8C /* CoinKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F77C46120AA1C1500EA4A8C /* CoinKit.framework */; };
+		4F77C46920AA4A2A00EA4A8C /* TransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F77C46820AA4A2A00EA4A8C /* TransactionViewController.swift */; };
 		4F84E5C2206E9483001CD456 /* QRCodeReader.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4F49352D206E94350046A31C /* QRCodeReader.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4F84E5C4206E9642001CD456 /* Bip21Reading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F84E5C3206E9642001CD456 /* Bip21Reading.swift */; };
 		4F84E5C6206E9983001CD456 /* UITextField+Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F84E5C5206E9983001CD456 /* UITextField+Currency.swift */; };
@@ -102,6 +103,11 @@
 		4FF59A992093E1A4001A89AF /* WalletStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF59A982093E1A4001A89AF /* WalletStore.swift */; };
 		4FF59A9F2093F68C001A89AF /* WalletCredit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF59A9E2093F68C001A89AF /* WalletCredit.swift */; };
 		4FF59AA12093F694001A89AF /* WalletDebit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF59AA02093F694001A89AF /* WalletDebit.swift */; };
+		4FF7C8FF20B0EBAC0080750E /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF7C8FE20B0EBAC0080750E /* SettingsTableViewController.swift */; };
+		4FF7C90120B0EC160080750E /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF7C90020B0EC160080750E /* Setting.swift */; };
+		4FF7C90320B0EC410080750E /* SettingSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF7C90220B0EC410080750E /* SettingSectionViewModel.swift */; };
+		4FF7C90620B0F1250080750E /* SettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF7C90520B0F1250080750E /* SettingCell.swift */; };
+		4FF7C90820B0F1F80080750E /* SettingDisplayTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF7C90720B0F1F80080750E /* SettingDisplayTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -209,6 +215,7 @@
 		4F762B6C206AF19200B8CC55 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		4F762B6E206AFA8400B8CC55 /* AddressRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressRequest.swift; sourceTree = "<group>"; };
 		4F77C46120AA1C1500EA4A8C /* CoinKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CoinKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F77C46820AA4A2A00EA4A8C /* TransactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewController.swift; sourceTree = "<group>"; };
 		4F84E5C3206E9642001CD456 /* Bip21Reading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bip21Reading.swift; sourceTree = "<group>"; };
 		4F84E5C5206E9983001CD456 /* UITextField+Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Currency.swift"; sourceTree = "<group>"; };
 		4F9970FE209FB3FF001E8191 /* ChainElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChainElement.swift; sourceTree = "<group>"; };
@@ -239,6 +246,11 @@
 		4FF59A982093E1A4001A89AF /* WalletStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletStore.swift; sourceTree = "<group>"; };
 		4FF59A9E2093F68C001A89AF /* WalletCredit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCredit.swift; sourceTree = "<group>"; };
 		4FF59AA02093F694001A89AF /* WalletDebit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletDebit.swift; sourceTree = "<group>"; };
+		4FF7C8FE20B0EBAC0080750E /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		4FF7C90020B0EC160080750E /* Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
+		4FF7C90220B0EC410080750E /* SettingSectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSectionViewModel.swift; sourceTree = "<group>"; };
+		4FF7C90520B0F1250080750E /* SettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCell.swift; sourceTree = "<group>"; };
+		4FF7C90720B0F1F80080750E /* SettingDisplayTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingDisplayTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -422,6 +434,7 @@
 			isa = PBXGroup;
 			children = (
 				4F1D9D19206806790065E3EF /* TransactionsTableViewController.swift */,
+				4F77C46820AA4A2A00EA4A8C /* TransactionViewController.swift */,
 			);
 			path = Transactions;
 			sourceTree = "<group>";
@@ -438,6 +451,7 @@
 			isa = PBXGroup;
 			children = (
 				4F1D9D1D206806CE0065E3EF /* SettingsViewController.swift */,
+				4FF7C8FE20B0EBAC0080750E /* SettingsTableViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -487,6 +501,8 @@
 				4FF59A9E2093F68C001A89AF /* WalletCredit.swift */,
 				4FF59AA02093F694001A89AF /* WalletDebit.swift */,
 				4FB49A9A2098EAB5000E04B6 /* WalletTransaction.swift */,
+				4FF7C90020B0EC160080750E /* Setting.swift */,
+				4FF7C90220B0EC410080750E /* SettingSectionViewModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -576,6 +592,7 @@
 		4FE1696B206D5CEB0090185D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4FF7C90420B0F1180080750E /* SettingCells */,
 				4FE1696C206D5D010090185D /* NumberPadView.swift */,
 				4F493527206E755C0046A31C /* InputFieldView.swift */,
 				4FB49A9E2099134C000E04B6 /* TransactionTableViewCell.swift */,
@@ -597,6 +614,15 @@
 				4FF59A982093E1A4001A89AF /* WalletStore.swift */,
 			);
 			path = WalletStore;
+			sourceTree = "<group>";
+		};
+		4FF7C90420B0F1180080750E /* SettingCells */ = {
+			isa = PBXGroup;
+			children = (
+				4FF7C90520B0F1250080750E /* SettingCell.swift */,
+				4FF7C90720B0F1F80080750E /* SettingDisplayTableViewCell.swift */,
+			);
+			path = SettingCells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -670,6 +696,11 @@
 					4F0F1CD620654FDA00B04E28 = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					4F0F1CEA20654FDA00B04E28 = {
 						CreatedOnToolsVersion = 9.2;
@@ -796,11 +827,14 @@
 				4F0F1D6A2065B2DD00B04E28 /* AddressManager.swift in Sources */,
 				4FE1696D206D5D010090185D /* NumberPadView.swift in Sources */,
 				4F0F1D652065B15300B04E28 /* TabBarController.swift in Sources */,
+				4FF7C90620B0F1250080750E /* SettingCell.swift in Sources */,
 				4FD836EA206C47FE00C016C7 /* SendAmountViewController.swift in Sources */,
+				4F77C46920AA4A2A00EA4A8C /* TransactionViewController.swift in Sources */,
 				4F1D9D102066E01C0065E3EF /* UIButton+Style.swift in Sources */,
 				4F6AFB9A208FE07A00031CA2 /* NetworkMananger.swift in Sources */,
 				4F2CABB9206AA76E0016B62F /* Account.swift in Sources */,
 				4F1D9D1A206806790065E3EF /* TransactionsTableViewController.swift in Sources */,
+				4FF7C90320B0EC410080750E /* SettingSectionViewModel.swift in Sources */,
 				4FF59A9F2093F68C001A89AF /* WalletCredit.swift in Sources */,
 				4FB49A9F2099134C000E04B6 /* TransactionTableViewCell.swift in Sources */,
 				4FB49A9B2098EAB5000E04B6 /* WalletTransaction.swift in Sources */,
@@ -809,10 +843,12 @@
 				4FF59A992093E1A4001A89AF /* WalletStore.swift in Sources */,
 				4F244288206BE89F008E1600 /* Input.swift in Sources */,
 				4F0F1D7F2065BF7900B04E28 /* OnboardingViewController.swift in Sources */,
+				4FF7C90820B0F1F80080750E /* SettingDisplayTableViewCell.swift in Sources */,
 				4F52899C206ABF360027BA59 /* Service.swift in Sources */,
 				4F2CAB9B20698F520016B62F /* AuthenticatedQueue.swift in Sources */,
 				4F493528206E755C0046A31C /* InputFieldView.swift in Sources */,
 				4F0F1CDB20654FDA00B04E28 /* AppDelegate.swift in Sources */,
+				4FF7C8FF20B0EBAC0080750E /* SettingsTableViewController.swift in Sources */,
 				4F2CABAE20699A0F0016B62F /* ReceiveViewController.swift in Sources */,
 				4F2CABB6206AA5BC0016B62F /* AccountManager.swift in Sources */,
 				4F1D9D1E206806CE0065E3EF /* SettingsViewController.swift in Sources */,
@@ -842,6 +878,7 @@
 				4F84E5C6206E9983001CD456 /* UITextField+Currency.swift in Sources */,
 				4F2CAB9A20698F520016B62F /* Client.swift in Sources */,
 				4F24428C206BF30F008E1600 /* AccountTransaction.swift in Sources */,
+				4FF7C90120B0EC160080750E /* Setting.swift in Sources */,
 				4F1D9D132066E37D0065E3EF /* BalanceViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1009,7 +1046,7 @@
 				INFOPLIST_FILE = FriendshipCoin/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.friendshipcoin.FriendshipCoin;
+				PRODUCT_BUNDLE_IDENTIFIER = com.elliottminns.friendshipcoin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1029,7 +1066,7 @@
 				INFOPLIST_FILE = FriendshipCoin/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.friendshipcoin.FriendshipCoin;
+				PRODUCT_BUNDLE_IDENTIFIER = com.elliottminns.friendshipcoin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

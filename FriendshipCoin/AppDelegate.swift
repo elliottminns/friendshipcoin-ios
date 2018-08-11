@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     window = UIWindow(frame: UIScreen.main.bounds)
 
+
     NetworkManager.shared.connect()
     let center = UNUserNotificationCenter.current()
     center.delegate = self

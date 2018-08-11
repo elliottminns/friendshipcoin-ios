@@ -12,6 +12,11 @@ import Stevia
 
 class NewWalletViewController: UIViewController {
   
+  enum ControllerType {
+    case newWallet
+    case seedView
+  }
+  
   let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
   
   let stackView = UIStackView()
@@ -22,27 +27,45 @@ class NewWalletViewController: UIViewController {
   
   let readyButton = UIButton()
   
+  let type: ControllerType
+  
   var mnemonic: Mnemonic? {
     didSet {
-      guard let mnemonic = mnemonic else { return }
-      self.activityIndicator.stopAnimating()
-      words.text = mnemonic.words.enumerated().reduce("", { (result, ele) -> String in
-        if ele.offset == 0 {
-          return ele.element
-        } else if ele.offset % 4 == 0 {
-          return "\(result)\n\n\(ele.element)"
-        } else {
-          return "\(result)  \(ele.element)"
-        }
-      })
-      stackView.isHidden = false
+      self.reloadMnemonic()
     }
   }
   
+  func reloadMnemonic() {
+    guard let mnemonic = mnemonic else { return }
+    self.activityIndicator.stopAnimating()
+    words.text = mnemonic.words.enumerated().reduce("", { (result, ele) -> String in
+      if ele.offset == 0 {
+        return ele.element
+      } else if ele.offset % 4 == 0 {
+        return "\(result)\n\n\(ele.element)"
+      } else {
+        return "\(result)  \(ele.element)"
+      }
+    })
+    stackView.isHidden = false
+  }
+
   init() {
+    type = .newWallet
     super.init(nibName: nil, bundle: nil)
     title = "New Wallet"
     render()
+  }
+  
+  init(mnemonic: Mnemonic) {
+    type = .seedView
+    self.mnemonic = mnemonic
+    super.init(nibName: nil, bundle: nil)
+    title = "My Seed"
+    render()
+    reloadMnemonic()
+    self.readyButton.isHidden = true
+    
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -96,7 +119,10 @@ class NewWalletViewController: UIViewController {
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    
+    guard self.mnemonic == nil else {
+      self.activityIndicator.stopAnimating()
+      return
+    }
     DispatchQueue.global().async {
       do {
         let mnemonic = try Mnemonic()
@@ -111,6 +137,10 @@ class NewWalletViewController: UIViewController {
   }
   
   @objc func readyButtonPressed(sender: UIButton) {
+    guard type == .newWallet else {
+      self.navigationController?.popViewController(animated: true)
+      return
+    }
     guard let mnemonic = mnemonic else { return }
     KeyManager.shared.store(mnemonic: mnemonic)
     let account = try! KeyManager.shared.getPublicBase58(account: 0)

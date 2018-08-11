@@ -35,6 +35,7 @@ class KeyManager {
       let node = try HDNode(seedHex: seed, network: NetworkType.friendshipcoin)
       let account = try node.derive(path: "m/44'/0'/0'")
       try privKeychain.set(seed, key: "seed")
+      try privKeychain.set(mnemonic.formatted, key: "words")
       try pubKeychain.set(account.toBase58(isPrivate: false), key: "m/44'/0'/0'")
       try pubKeychain.set("true", key: "has-mnemonic-phrase")
     } catch let error {
@@ -53,6 +54,7 @@ class KeyManager {
   
   func nuke() throws {
     try privKeychain.remove("seed")
+    try privKeychain.remove("words")
     try pubKeychain.remove("m/44'/0'/0'")
     try pubKeychain.remove("has-mnemonic-phrase")
   }

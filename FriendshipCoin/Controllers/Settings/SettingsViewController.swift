@@ -9,6 +9,9 @@
 import UIKit
 
 class SettingsViewController: UIViewController {
+  
+  let tableViewController = SettingsTableViewController()
+  
   init() {
     super.init(nibName: nil, bundle: nil)
     self.title = "Settings"
@@ -22,5 +25,8 @@ class SettingsViewController: UIViewController {
   
   func render() {
     view.backgroundColor = UIColor.white
+    addChildViewController(tableViewController)
+    view.addSubview(tableViewController.view)
+    tableViewController.view.edgesToSuperview(usingSafeArea: true)
   }
 }

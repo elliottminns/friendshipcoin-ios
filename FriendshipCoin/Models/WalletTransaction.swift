@@ -7,8 +7,9 @@
 //
 
 import Foundation
+import CoinKit
 
-struct WalletTransaction {
+struct WalletTransaction: Timestamped {
   
   enum Direction {
     case `in`
@@ -45,9 +46,21 @@ struct WalletTransaction {
     return Int64(amountIn) - Int64(amountOut)
   }
   
+  var feelessAmount: Int64 {
+    let amount = self.amount
+    let adjust = direction == .out ? fee : 0
+    return amount + adjust
+  }
+  
+  var fee: Int64 {
+    return Int64(transaction.inputsAmount) - Int64(transaction.outputsAmount)
+  }
+  
   var credits: [WalletCredit] = []
   
   var debits: [WalletDebit] = []
+  
+  var isPending: Bool = false
   
   var formattedAmount: String {
     return String(format: "%0.8f", Double(self.amount) * 1e-8)

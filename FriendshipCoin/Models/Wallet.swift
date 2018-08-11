@@ -54,6 +54,8 @@ class Wallet {
   
   var store: WalletStore
   
+  var isScanning = false
+  
   var allCredits: [WalletCredit] {
     return self.credits.reduce([]) { (result, obj) in
       let set = obj.value
@@ -269,6 +271,7 @@ class Wallet {
 
   func scanForBalances(callback: @escaping () -> Void) {
     scanQueue.async {
+      self.isScanning = true
       let tip = self.chain.tip
       guard let top = self.chain.block(with: tip.hash) else { return }
       
@@ -303,12 +306,13 @@ class Wallet {
       if !wasANull {
         self.lastBlockScanned = top.hash
       }
-      
+      self.isScanning = false
       DispatchQueue.main.async {
         NotificationCenter.default.post(name: Notifications.scanningEnded, object: nil, userInfo: [
           "credits": credits,
           "debits": debits
         ])
+        
         callback()
         self.store.save(wallet: self)
       }
